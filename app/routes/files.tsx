@@ -1,17 +1,17 @@
-import React, { useEffect } from "react";
-import { usePuter } from "~/lib/puter";
+import { useEffect } from "react";
 import { useNavigate } from "react-router";
+import { usePuterStore } from "~/lib/puter";
 
 const FilesPage = () => {
-  const { auth, isLoading, error, clearError } = usePuter();
+  const { user, isAuthenticated, isLoading, error, clearError } =
+    usePuterStore();
   const navigate = useNavigate();
-  const user = auth.getUser();
 
   useEffect(() => {
-    if (!isLoading && !auth.isAuthenticated) {
+    if (!isLoading && !isAuthenticated) {
       navigate("/auth");
     }
-  }, [isLoading, auth.isAuthenticated, navigate]);
+  }, [isLoading]);
 
   if (isLoading) {
     return <div>Loading...</div>;
