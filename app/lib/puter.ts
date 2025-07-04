@@ -9,28 +9,45 @@ declare global {
         signIn: () => Promise<void>;
         signOut: () => Promise<void>;
       };
+      fs: {
+        write: (
+          path: string,
+          data: string | File | Blob
+        ) => Promise<File | undefined>;
+        read: (path: string) => Promise<Blob>;
+        upload: (file: File[] | Blob[]) => Promise<File[]>;
+        delete: (path: string) => Promise<void>;
+        readdir: (path: string) => Promise<FSItem[] | undefined>;
+      };
     };
   }
-}
-
-export interface PuterUser {
-  uuid: string;
-  username: string;
 }
 
 interface PuterStore {
   isLoading: boolean;
   error: string | null;
-  user: PuterUser | null;
-  isAuthenticated: boolean;
   puterReady: boolean;
+  auth: {
+    user: PuterUser | null;
+    isAuthenticated: boolean;
+    signIn: () => Promise<void>;
+    signOut: () => Promise<void>;
+    refreshUser: () => Promise<void>;
+    checkAuthStatus: () => Promise<boolean>;
+    getUser: () => PuterUser | null;
+  };
+  fs: {
+    write: (
+      path: string,
+      data: string | File | Blob
+    ) => Promise<File | undefined>;
+    read: (path: string) => Promise<Blob | undefined>;
+    upload: (file: File[] | Blob[]) => Promise<File[] | undefined>;
+    delete: (path: string) => Promise<void>;
+    readDir: (path: string) => Promise<FSItem[] | undefined>;
+  };
 
   init: () => void;
-  signIn: () => Promise<void>;
-  signOut: () => Promise<void>;
-  refreshUser: () => Promise<void>;
-  checkAuthStatus: () => Promise<boolean>;
-  getUser: () => PuterUser | null;
   clearError: () => void;
 }
 
@@ -42,8 +59,15 @@ export const usePuterStore = create<PuterStore>((set, get) => {
     set({
       error: msg,
       isLoading: false,
-      isAuthenticated: false,
-      user: null,
+      auth: {
+        user: null,
+        isAuthenticated: false,
+        signIn: get().auth.signIn,
+        signOut: get().auth.signOut,
+        refreshUser: get().auth.refreshUser,
+        checkAuthStatus: get().auth.checkAuthStatus,
+        getUser: get().auth.getUser,
+      },
     });
   };
 
@@ -61,15 +85,29 @@ export const usePuterStore = create<PuterStore>((set, get) => {
       if (isSignedIn) {
         const user = await puter.auth.getUser();
         set({
-          user,
-          isAuthenticated: true,
+          auth: {
+            user,
+            isAuthenticated: true,
+            signIn: get().auth.signIn,
+            signOut: get().auth.signOut,
+            refreshUser: get().auth.refreshUser,
+            checkAuthStatus: get().auth.checkAuthStatus,
+            getUser: () => user,
+          },
           isLoading: false,
         });
         return true;
       } else {
         set({
-          user: null,
-          isAuthenticated: false,
+          auth: {
+            user: null,
+            isAuthenticated: false,
+            signIn: get().auth.signIn,
+            signOut: get().auth.signOut,
+            refreshUser: get().auth.refreshUser,
+            checkAuthStatus: get().auth.checkAuthStatus,
+            getUser: () => null,
+          },
           isLoading: false,
         });
         return false;
@@ -93,7 +131,7 @@ export const usePuterStore = create<PuterStore>((set, get) => {
 
     try {
       await puter.auth.signIn();
-      await get().checkAuthStatus();
+      await checkAuthStatus();
     } catch (err) {
       const msg = err instanceof Error ? err.message : "Sign in failed";
       setError(msg);
@@ -112,8 +150,15 @@ export const usePuterStore = create<PuterStore>((set, get) => {
     try {
       await puter.auth.signOut();
       set({
-        user: null,
-        isAuthenticated: false,
+        auth: {
+          user: null,
+          isAuthenticated: false,
+          signIn: get().auth.signIn,
+          signOut: get().auth.signOut,
+          refreshUser: get().auth.refreshUser,
+          checkAuthStatus: get().auth.checkAuthStatus,
+          getUser: () => null,
+        },
         isLoading: false,
       });
     } catch (err) {
@@ -134,8 +179,15 @@ export const usePuterStore = create<PuterStore>((set, get) => {
     try {
       const user = await puter.auth.getUser();
       set({
-        user,
-        isAuthenticated: true,
+        auth: {
+          user,
+          isAuthenticated: true,
+          signIn: get().auth.signIn,
+          signOut: get().auth.signOut,
+          refreshUser: get().auth.refreshUser,
+          checkAuthStatus: get().auth.checkAuthStatus,
+          getUser: () => user,
+        },
         isLoading: false,
       });
     } catch (err) {
@@ -148,7 +200,7 @@ export const usePuterStore = create<PuterStore>((set, get) => {
     const puter = getPuter();
     if (puter) {
       set({ puterReady: true });
-      get().checkAuthStatus();
+      checkAuthStatus();
       return;
     }
 
@@ -156,7 +208,7 @@ export const usePuterStore = create<PuterStore>((set, get) => {
       if (getPuter()) {
         clearInterval(interval);
         set({ puterReady: true });
-        get().checkAuthStatus();
+        checkAuthStatus();
       }
     }, 100);
 
@@ -168,18 +220,68 @@ export const usePuterStore = create<PuterStore>((set, get) => {
     }, 10000);
   };
 
+  const write = async (path: string, data: string | File | Blob) => {
+    const puter = getPuter();
+    if (!puter) {
+      setError("Puter.js not available");
+      return;
+    }
+    return puter.fs.write(path, data);
+  };
+  const readDir = async (path: string) => {
+    const puter = getPuter();
+    if (!puter) {
+      setError("Puter.js not available");
+      return;
+    }
+    return puter.fs.readdir(path);
+  };
+  const readFile = async (path: string) => {
+    const puter = getPuter();
+    if (!puter) {
+      setError("Puter.js not available");
+      return;
+    }
+    return puter.fs.read(path);
+  };
+
+  const upload = async (files: File[] | Blob[]) => {
+    const puter = getPuter();
+    if (!puter) {
+      setError("Puter.js not available");
+      return;
+    }
+    return puter.fs.upload(files);
+  };
+  const deleteFile = async (path: string) => {
+    const puter = getPuter();
+    if (!puter) {
+      setError("Puter.js not available");
+      return;
+    }
+    return puter.fs.delete(path);
+  };
   return {
     isLoading: true,
     error: null,
-    user: null,
-    isAuthenticated: false,
     puterReady: false,
+    auth: {
+      user: null,
+      isAuthenticated: false,
+      signIn,
+      signOut,
+      refreshUser,
+      checkAuthStatus,
+      getUser: () => get().auth.user,
+    },
+    fs: {
+      write: (path: string, data: string | File | Blob) => write(path, data),
+      read: (path: string) => readFile(path),
+      readDir: (path: string) => readDir(path),
+      upload: (files: File[] | Blob[]) => upload(files),
+      delete: (path: string) => deleteFile(path),
+    },
     init,
-    signIn,
-    signOut,
-    refreshUser,
-    checkAuthStatus,
-    getUser: () => get().user,
     clearError: () => set({ error: null }),
   };
 });

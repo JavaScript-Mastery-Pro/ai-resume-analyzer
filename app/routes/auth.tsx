@@ -1,15 +1,7 @@
 import { usePuterStore } from "../lib/puter";
 
 const AuthPage = () => {
-  const {
-    isAuthenticated,
-    user,
-    signOut,
-    signIn,
-    isLoading,
-    error,
-    clearError,
-  } = usePuterStore();
+  const { auth, isLoading, error, clearError } = usePuterStore();
 
   return (
     <div>
@@ -29,16 +21,16 @@ const AuthPage = () => {
       )}
 
       <div className="flex flex-wrap gap-8">
-        {!isAuthenticated ? (
+        {!auth.isAuthenticated ? (
           <button
-            onClick={signIn}
+            onClick={auth.signIn}
             className="bg-blue-600 text-white px-4 py-2 rounded"
           >
             Sign In
           </button>
         ) : (
           <button
-            onClick={signOut}
+            onClick={auth.signOut}
             className="bg-red-600 text-white px-4 py-2 rounded"
           >
             Sign Out
@@ -47,12 +39,13 @@ const AuthPage = () => {
       </div>
 
       <div className="mt-4">
-        <strong>User:</strong> {user ? user.username : "Not signed in"}
+        <strong>User:</strong>{" "}
+        {auth.user ? auth.user.username : "Not signed in"}
       </div>
 
-      {user && (
+      {auth.user && (
         <div className="mt-2 text-sm text-gray-600">
-          <p>UUID: {user.uuid}</p>
+          <p>UUID: {auth.user.uuid}</p>
         </div>
       )}
     </div>
