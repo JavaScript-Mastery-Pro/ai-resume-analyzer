@@ -19,6 +19,19 @@ declare global {
         delete: (path: string) => Promise<void>;
         readdir: (path: string) => Promise<FSItem[] | undefined>;
       };
+      ai: {
+        chat: (
+          prompt: string,
+          imageURL?: string,
+          testMode?: boolean,
+          options?: PuterChatOptions
+        ) => Promise<Object>;
+        img2txt: (
+          image: string | File | Blob,
+          testMode?: boolean
+        ) => Promise<string>;
+      };
+      kv: {};
     };
   }
 }
@@ -45,6 +58,18 @@ interface PuterStore {
     upload: (file: File[] | Blob[]) => Promise<File[] | undefined>;
     delete: (path: string) => Promise<void>;
     readDir: (path: string) => Promise<FSItem[] | undefined>;
+  };
+  ai: {
+    chat: (
+      prompt: string,
+      imageURL?: string,
+      testMode?: boolean,
+      options?: PuterChatOptions
+    ) => Promise<Object | undefined>;
+    img2txt: (
+      image: string | File | Blob,
+      testMode?: boolean
+    ) => Promise<string | undefined>;
   };
 
   init: () => void;
@@ -253,6 +278,7 @@ export const usePuterStore = create<PuterStore>((set, get) => {
     }
     return puter.fs.upload(files);
   };
+
   const deleteFile = async (path: string) => {
     const puter = getPuter();
     if (!puter) {
@@ -261,6 +287,31 @@ export const usePuterStore = create<PuterStore>((set, get) => {
     }
     return puter.fs.delete(path);
   };
+
+  const chat = async (
+    prompt: string,
+    imageURL: string = "",
+    testMode: boolean = false,
+    options: PuterChatOptions = { model: "gpt-4.1-nano" }
+  ) => {
+    const puter = getPuter();
+    if (!puter) {
+      setError("Puter.js not available");
+      return;
+    }
+    return puter.ai.chat(prompt, imageURL, testMode, options);
+  };
+
+  const img2txt = async (image: string | File | Blob, testMode?: boolean) => {
+    const puter = getPuter();
+    if (!puter) {
+      setError("Puter.js not available");
+      return;
+    }
+    console.log("img2txt", image, testMode);
+    return puter.ai.img2txt(image, testMode);
+  };
+
   return {
     isLoading: true,
     error: null,
@@ -280,6 +331,17 @@ export const usePuterStore = create<PuterStore>((set, get) => {
       readDir: (path: string) => readDir(path),
       upload: (files: File[] | Blob[]) => upload(files),
       delete: (path: string) => deleteFile(path),
+    },
+    ai: {
+      chat: (
+        prompt: string,
+        imageURL?: string,
+
+        testMode?: boolean,
+        options?: PuterChatOptions
+      ) => chat(prompt, imageURL, testMode, options),
+      img2txt: (image: string | File | Blob, testMode?: boolean) =>
+        img2txt(image, testMode),
     },
     init,
     clearError: () => set({ error: null }),

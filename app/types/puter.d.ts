@@ -17,3 +17,18 @@ interface PuterUser {
   uuid: string;
   username: string;
 }
+
+interface PuterChatOptions {
+  model?: string;
+  stream?: boolean;
+  max_tokens?: number;
+  temperature?: number;
+  tools?: {
+    type: "function";
+    function: {
+      name: string;
+      description: string;
+      parameters: { type: string; properties: {} };
+    }[];
+  };
+}
