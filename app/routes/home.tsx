@@ -1,3 +1,6 @@
+import { useEffect } from "react";
+import { useNavigate } from "react-router";
+import { usePuterStore } from "~/lib/puter";
 import JobCard from "../components/JobCard";
 import Navbar from "../components/Navbar";
 import { jobs } from "../constants";
@@ -11,6 +14,14 @@ export function meta({}: Route.MetaArgs) {
 }
 
 export default function Home() {
+  const { auth, isLoading, error } = usePuterStore();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!isLoading && !auth.isAuthenticated) {
+      navigate("/auth?next=/");
+    }
+  }, [isLoading]);
   return (
     <main className="bg-gradient min-h-screen pt-10">
       <Navbar />
