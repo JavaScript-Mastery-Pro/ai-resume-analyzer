@@ -1,54 +1,57 @@
+import { useEffect } from "react";
+import { useLocation, useNavigate } from "react-router";
 import { usePuterStore } from "../lib/puter";
 
 const AuthPage = () => {
   const { auth, isLoading, error, clearError } = usePuterStore();
+  const location = useLocation();
+  const next = location.search.split("next=")[1];
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (auth.isAuthenticated && next) {
+      navigate(next);
+    }
+  }, [auth.isAuthenticated, next]);
 
   return (
-    <div>
-      <h1>Puter.js Integration</h1>
-
-      {isLoading && <p>Loading...</p>}
-      {error && (
-        <div>
-          <div>Error: {error}</div>
-          <button
-            onClick={clearError}
-            className="bg-red-600 text-white px-4 py-2 rounded"
-          >
-            Clear Error
-          </button>
+    <main className="relative bg-gradient">
+      <section className="flex flex-col items-center gap-8 pt-12 h-screen">
+        <div className="flex flex-col items-center gap-2">
+          <h1 className="text-6xl font-bold text-gradient">Welcome Back</h1>
+          <h2 className="text-3xl text-dark-200">
+            Log In to Continue Your Job Journey
+          </h2>
         </div>
-      )}
-
-      <div className="flex flex-wrap gap-8">
-        {!auth.isAuthenticated ? (
-          <button
-            onClick={auth.signIn}
-            className="bg-blue-600 text-white px-4 py-2 rounded"
-          >
-            Sign In
-          </button>
-        ) : (
-          <button
-            onClick={auth.signOut}
-            className="bg-red-600 text-white px-4 py-2 rounded"
-          >
-            Sign Out
-          </button>
-        )}
-      </div>
-
-      <div className="mt-4">
-        <strong>User:</strong>{" "}
-        {auth.user ? auth.user.username : "Not signed in"}
-      </div>
-
-      {auth.user && (
-        <div className="mt-2 text-sm text-gray-600">
-          <p>UUID: {auth.user.uuid}</p>
+        <div className="flex flex-col items-center gap-2 mt-40">
+          {isLoading ? (
+            <button className="primary-gradient rounded-full py-4 px-8 cursor-pointer w-[600px] animate-pulse">
+              <p className="text-3xl font-semibold text-white">
+                Signing You In...
+              </p>
+            </button>
+          ) : (
+            <>
+              {auth.isAuthenticated ? (
+                <button
+                  className="primary-gradient rounded-full py-4 px-8 cursor-pointer w-[600px]"
+                  onClick={auth.signOut}
+                >
+                  <p className="text-white text-3xl font-semibold">Log Out</p>
+                </button>
+              ) : (
+                <button
+                  className="primary-gradient rounded-full py-4 px-8 cursor-pointer w-[600px]"
+                  onClick={auth.signIn}
+                >
+                  <p className="text-white text-3xl font-semibold">Log In</p>
+                </button>
+              )}
+            </>
+          )}
         </div>
-      )}
-    </div>
+      </section>
+    </main>
   );
 };
 
