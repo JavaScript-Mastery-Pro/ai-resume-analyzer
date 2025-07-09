@@ -11,6 +11,10 @@ export const navLinks = [
     label: "Create a Job",
     href: "/jobs/new",
   },
+  {
+    label: "Candidates",
+    href: "/candidates",
+  },
 ];
 
 export const jobs: Job[] = [

@@ -20,16 +20,25 @@ body {
     @apply bg-clip-text text-transparent bg-gradient-to-r from-[#AB8C95] via-[#000000] to-[#8E97C5];
   }
   .gradient-border {
-    @apply bg-gradient-to-b from-light-blue-100 to-light-blue-200;
+    @apply bg-gradient-to-b from-light-blue-100/10 to-light-blue-200/30;
   }
 }
 
 @utility bg-gradient {
   background: linear-gradient(to bottom, #f0f4ff 60%, #fa7185cc);
 }
+
+@utility gradient-hover {
+  @apply bg-gradient-to-b from-light-blue-100/10 to-light-blue-200/30;
+}
+
 @utility primary-gradient {
   background: linear-gradient(to bottom, #8e98ff, #606beb);
   box-shadow: 0px 74px 21px 0px #6678ef00;
+}
+
+@utility primary-gradient-hover {
+  background: linear-gradient(to bottom, #717dff, #4957eb);
 }
 
 @utility inset-shadow {

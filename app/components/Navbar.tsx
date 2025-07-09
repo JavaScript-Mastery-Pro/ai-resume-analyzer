@@ -12,9 +12,12 @@ const Navbar = () => {
           </Link>
         ))}
       </div>
-      <button className="primary-gradient text-white rounded-full px-4 py-2 cursor-pointer">
+      <Link
+        to="/upload"
+        className="primary-gradient text-white rounded-full px-4 py-2 cursor-pointer hover:primary-gradient-hover transition-all duration-300"
+      >
         Upload Resume
-      </button>
+      </Link>
     </nav>
   );
 };

@@ -15,7 +15,7 @@ declare global {
           data: string | File | Blob
         ) => Promise<File | undefined>;
         read: (path: string) => Promise<Blob>;
-        upload: (file: File[] | Blob[]) => Promise<File[]>;
+        upload: (file: File[] | Blob[]) => Promise<FSItem>;
         delete: (path: string) => Promise<void>;
         readdir: (path: string) => Promise<FSItem[] | undefined>;
       };
@@ -31,7 +31,13 @@ declare global {
           testMode?: boolean
         ) => Promise<string>;
       };
-      kv: {};
+      kv: {
+        get: (key: string) => Promise<string | null>;
+        set: (key: string, value: string) => Promise<boolean>;
+        delete: (key: string) => Promise<boolean>;
+        list: (pattern: string, returnValues?: boolean) => Promise<string[]>;
+        flush: () => Promise<boolean>;
+      };
     };
   }
 }
@@ -55,7 +61,7 @@ interface PuterStore {
       data: string | File | Blob
     ) => Promise<File | undefined>;
     read: (path: string) => Promise<Blob | undefined>;
-    upload: (file: File[] | Blob[]) => Promise<File[] | undefined>;
+    upload: (file: File[] | Blob[]) => Promise<FSItem | undefined>;
     delete: (path: string) => Promise<void>;
     readDir: (path: string) => Promise<FSItem[] | undefined>;
   };
@@ -70,6 +76,16 @@ interface PuterStore {
       image: string | File | Blob,
       testMode?: boolean
     ) => Promise<string | undefined>;
+  };
+  kv: {
+    get: (key: string) => Promise<string | null | undefined>;
+    set: (key: string, value: string) => Promise<boolean | undefined>;
+    delete: (key: string) => Promise<boolean | undefined>;
+    list: (
+      pattern: string,
+      returnValues?: boolean
+    ) => Promise<string[] | undefined>;
+    flush: () => Promise<boolean | undefined>;
   };
 
   init: () => void;
@@ -299,7 +315,8 @@ export const usePuterStore = create<PuterStore>((set, get) => {
       setError("Puter.js not available");
       return;
     }
-    return puter.ai.chat(prompt, imageURL, testMode, options);
+    // return puter.ai.chat(prompt, imageURL, testMode, options);
+    return puter.ai.chat(prompt);
   };
 
   const img2txt = async (image: string | File | Blob, testMode?: boolean) => {
@@ -310,6 +327,54 @@ export const usePuterStore = create<PuterStore>((set, get) => {
     }
     console.log("img2txt", image, testMode);
     return puter.ai.img2txt(image, testMode);
+  };
+
+  const getKV = async (key: string) => {
+    const puter = getPuter();
+    if (!puter) {
+      setError("Puter.js not available");
+      return;
+    }
+    return puter.kv.get(key);
+  };
+
+  const setKV = async (key: string, value: string) => {
+    const puter = getPuter();
+    if (!puter) {
+      setError("Puter.js not available");
+      return;
+    }
+    return puter.kv.set(key, value);
+  };
+
+  const deleteKV = async (key: string) => {
+    const puter = getPuter();
+    if (!puter) {
+      setError("Puter.js not available");
+      return;
+    }
+    return puter.kv.delete(key);
+  };
+
+  const listKV = async (pattern: string, returnValues?: boolean) => {
+    const puter = getPuter();
+    if (!puter) {
+      setError("Puter.js not available");
+      return;
+    }
+    if (returnValues === undefined) {
+      returnValues = false;
+    }
+    return puter.kv.list(pattern, returnValues);
+  };
+
+  const flushKV = async () => {
+    const puter = getPuter();
+    if (!puter) {
+      setError("Puter.js not available");
+      return;
+    }
+    return puter.kv.flush();
   };
 
   return {
@@ -342,6 +407,14 @@ export const usePuterStore = create<PuterStore>((set, get) => {
       ) => chat(prompt, imageURL, testMode, options),
       img2txt: (image: string | File | Blob, testMode?: boolean) =>
         img2txt(image, testMode),
+    },
+    kv: {
+      get: (key: string) => getKV(key),
+      set: (key: string, value: string) => setKV(key, value),
+      delete: (key: string) => deleteKV(key),
+      list: (pattern: string, returnValues?: boolean) =>
+        listKV(pattern, returnValues),
+      flush: () => flushKV(),
     },
     init,
     clearError: () => set({ error: null }),

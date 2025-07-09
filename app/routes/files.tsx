@@ -3,7 +3,7 @@ import { useNavigate } from "react-router";
 import { usePuterStore } from "~/lib/puter";
 
 const FilesPage = () => {
-  const { auth, isLoading, error, clearError, fs, ai } = usePuterStore();
+  const { auth, isLoading, error, clearError, fs, ai, kv } = usePuterStore();
   const navigate = useNavigate();
   const [files, setFiles] = useState<FSItem[]>([]);
   const [images, setImages] = useState<string[]>([]);
@@ -13,6 +13,8 @@ const FilesPage = () => {
   );
 
   const loadFiles = async () => {
+    const keys = await kv.list("*", true);
+    console.log("keys", keys);
     console.log("loading files");
     const files = (await fs.readDir("./")) as FSItem[];
     console.log("files", files);
@@ -46,6 +48,11 @@ const FilesPage = () => {
     if (!newFile) return;
     await fs.upload([newFile]);
     setNewFile(null);
+    loadFiles();
+  };
+
+  const handleDelete = async (path: string) => {
+    await fs.delete(path);
     loadFiles();
   };
 
@@ -121,7 +128,7 @@ const FilesPage = () => {
               (file.extension === "jpg" && (
                 <img src={file.url} alt={file.name} />
               ))}
-            {file.url}
+            {file.path}
             <button
               className="bg-blue-500 text-white px-4 py-2 rounded-md"
               onClick={() => handleAnalyze(file.path)}
@@ -134,9 +141,30 @@ const FilesPage = () => {
             >
               img 2 txt
             </button>
+            <button
+              className="bg-blue-500 text-white px-4 py-2 rounded-md"
+              onClick={() => handleDelete(file.path)}
+            >
+              Delete
+            </button>
+            <a
+              href={file.url}
+              download={file.name}
+              className="bg-blue-600 text-white px-4 py-2 rounded mt-2"
+            >
+              Download Image
+            </a>
             {analysisResult && <div>{analysisResult}</div>}
           </div>
         ))}
+      </div>
+      <div>
+        <button
+          className="bg-blue-500 text-white px-4 py-2 rounded-md"
+          onClick={() => kv.flush()}
+        >
+          Flush kv
+        </button>
       </div>
     </div>
   );
