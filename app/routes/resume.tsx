@@ -51,7 +51,7 @@ const ResumePage = () => {
     <main className="pt-10 min-h-screen">
       <Navbar />
       <div className="flex flex-row w-full">
-        <section className="sticky top-0 h-screen flex flex-col items-center gap-8 pt-12  w-1/2 px-5 bg-[url('/images/bg-smol.svg')] bg-cover bg-center">
+        <section className="sticky top-0 min-h-screen flex flex-col items-center gap-8 pt-12  w-1/2 px-5 bg-[url('/images/bg-smol.svg')] bg-cover">
           <div className="bg-blue-200/40 p-2 rounded-2xl mx-10">
             <div className="w-full h-full rounded-2xl p-2 ">
               {imageUrl && resumeUrl && (

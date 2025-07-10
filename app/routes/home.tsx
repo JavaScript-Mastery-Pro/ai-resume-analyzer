@@ -41,10 +41,10 @@ export default function Home() {
       <section className="flex flex-col items-center gap-8 pt-12 h-screen mx-15">
         <div className="flex flex-col items-center gap-8 max-w-2xl text-center">
           <h1 className="text-6xl font-bold text-gradient">
-            Choose a Job to Analyze Your Resume
+            Browse Your Resumes
           </h1>
           <h2 className="text-3xl text-dark-200">
-            Pick a role that matches your interest
+            Click on a resume to view detailed feedback
           </h2>
         </div>
         {resumes.length > 0 && (
