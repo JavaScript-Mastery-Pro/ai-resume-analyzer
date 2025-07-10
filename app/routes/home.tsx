@@ -1,9 +1,8 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
+import ResumeCard from "~/components/ResumeCard";
 import { usePuterStore } from "~/lib/puter";
-import JobCard from "../components/JobCard";
 import Navbar from "../components/Navbar";
-import { jobs } from "../constants";
 import type { Route } from "./+types/home";
 
 export function meta({}: Route.MetaArgs) {
@@ -14,7 +13,8 @@ export function meta({}: Route.MetaArgs) {
 }
 
 export default function Home() {
-  const { auth, isLoading, error } = usePuterStore();
+  const { auth, isLoading, error, clearError, fs, ai, kv } = usePuterStore();
+  const [resumes, setResumes] = useState<Resume[]>([]);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -22,8 +22,24 @@ export default function Home() {
       navigate("/auth?next=/");
     }
   }, [isLoading]);
+
+  useEffect(() => {
+    const loadResumes = async () => {
+      const resumes = (await kv.list("resume:*", true)) as KVItem[];
+      console.log("-----RESUMES---");
+      console.log(resumes);
+      const parsedResumes = resumes?.map((resume) => {
+        const data = JSON.parse(resume.value);
+        return data as Resume;
+      });
+      console.log(parsedResumes);
+      setResumes(parsedResumes || []);
+    };
+    loadResumes();
+  }, []);
+
   return (
-    <main className="bg-gradient min-h-screen pt-10">
+    <main className="bg-[url('/images/bg-main.svg')] bg-cover bg-center min-h-screen pt-10">
       <Navbar />
       <section className="flex flex-col items-center gap-8 pt-12 h-screen mx-15">
         <div className="flex flex-col items-center gap-8 max-w-2xl text-center">
@@ -34,11 +50,13 @@ export default function Home() {
             Pick a role that matches your interest
           </h2>
         </div>
-        <div className="grid grid-cols-3 gap-6">
-          {jobs.map((job) => (
-            <JobCard key={job.title} job={job} />
-          ))}
-        </div>
+        {resumes.length > 0 && (
+          <div className="grid grid-cols-3 gap-6">
+            {resumes.map((resume) => (
+              <ResumeCard key={resume.id} resume={resume} />
+            ))}
+          </div>
+        )}
       </section>
     </main>
   );

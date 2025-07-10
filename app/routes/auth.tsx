@@ -15,7 +15,7 @@ const AuthPage = () => {
   }, [auth.isAuthenticated, next]);
 
   return (
-    <main className="relative bg-gradient">
+    <main className="relative bg-[url('/images/bg-auth.svg')] bg-cover bg-center">
       <section className="flex flex-col items-center gap-8 pt-12 h-screen">
         <div className="flex flex-col items-center gap-2">
           <h1 className="text-6xl font-bold text-gradient">Welcome Back</h1>

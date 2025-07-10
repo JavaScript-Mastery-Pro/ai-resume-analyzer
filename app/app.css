@@ -20,7 +20,7 @@ body {
     @apply bg-clip-text text-transparent bg-gradient-to-r from-[#AB8C95] via-[#000000] to-[#8E97C5];
   }
   .gradient-border {
-    @apply bg-gradient-to-b from-light-blue-100/10 to-light-blue-200/30;
+    @apply bg-gradient-to-b from-light-blue-100 to-light-blue-200;
   }
 }
 

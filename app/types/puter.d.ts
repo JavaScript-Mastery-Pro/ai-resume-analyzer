@@ -18,6 +18,11 @@ interface PuterUser {
   username: string;
 }
 
+interface KVItem {
+  key: string;
+  value: string;
+}
+
 interface PuterChatOptions {
   model?: string;
   stream?: boolean;
@@ -31,4 +36,23 @@ interface PuterChatOptions {
       parameters: { type: string; properties: {} };
     }[];
   };
+}
+
+interface AIResponse {
+  index: number;
+  message: {
+    role: string;
+    content: string;
+    refusal: null | string;
+    annotations: any[];
+  };
+  logprobs: null | any;
+  finish_reason: string;
+  usage: {
+    type: string;
+    model: string;
+    amount: number;
+    cost: number;
+  }[];
+  via_ai_chat_service: boolean;
 }

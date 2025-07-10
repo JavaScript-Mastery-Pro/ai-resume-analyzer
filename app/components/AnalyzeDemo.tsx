@@ -60,9 +60,59 @@ const AnalyzeDemo = ({ file }: { file: File }) => {
 
     setStatusText("Analyzing...");
     const analysis = await ai.chat(
-      `You are an ATS (Applicant Tracking System) expert. Analyze and rate the following resume. Be thorough and detailed. Rate the resume on a scale of 1 to 100. Return the analysis in markdown format. The resume text is: ${resumeText}`
+      `You are an expert in ATS (Applicant Tracking System) and resume analysis.
+      Analyze and rate the following resume. 
+      Be thorough and detailed. Don't be afraid to point out any mistakes or areas for improvement.
+      You can mention things that are already good in the resume, so user can know what to keep.
+      Provide the feedback using the following format:
+      interface Feedback {
+        overallScore: number;
+        ATS: {
+          score: number; //rate based on ATS suitability
+          tips: {
+            type: "good" | "improve";
+            tip: string; //give 3-4 tips
+          }[];
+        };
+        toneAndStyle: {
+          score: number;
+          tips: {
+            type: "good" | "improve";
+            tip: string; //make it a short "title" for the actual explanation
+            explanation: string; //explain in detail here
+          }[]; //give 3-4 tips
+        };
+        content: {
+          score: number;
+          tips: {
+            type: "good" | "improve";
+            tip: string; //make it a short "title" for the actual explanation
+            explanation: string; //explain in detail here
+          }[]; //give 3-4 tips
+        };
+        structure: {
+          score: number;
+          tips: {
+            type: "good" | "improve";
+            tip: string; //make it a short "title" for the actual explanation
+            explanation: string; //explain in detail here
+          }[]; //give 3-4 tips
+        };
+        skills: {
+          score: number;
+          tips: {
+            type: "good" | "improve";
+            tip: string; //make it a short "title" for the actual explanation
+            explanation: string; //explain in detail here
+          }[]; //give 3-4 tips
+        };
+      }
+      Return the analysis as an JSON object, without any other text. 
+      The resume text is: ${resumeText}`
     );
     console.log(analysis);
+    console.log("parsed");
+    console.log(JSON.parse(analysis!.message.content));
     if (!analysis) {
       setStatusText("Error: Failed to analyze resume");
       return;
@@ -82,7 +132,9 @@ const AnalyzeDemo = ({ file }: { file: File }) => {
       >
         <p className="text-white text-2xl font-semibold">Analyze</p>
       </button>
-      <p className="text-2xl font-semibold text-center">{statusText}</p>
+      <p className="text-2xl font-semibold text-center text-gradient">
+        {statusText}
+      </p>
       {/* {analysis && <Markdown>{analysis}</Markdown>} */}
     </div>
   );

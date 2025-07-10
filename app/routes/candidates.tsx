@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
-import CandidateCard from "~/components/CandidateCard";
 import Navbar from "~/components/Navbar";
+import ResumeCard from "~/components/ResumeCard";
 import { usePuterStore } from "~/lib/puter";
 
 const CandidatesPage = () => {
@@ -49,7 +49,7 @@ const CandidatesPage = () => {
           {candidates && (
             <>
               {candidates.map((candidate) => (
-                <CandidateCard
+                <ResumeCard
                   key={candidate.id}
                   id={candidate.id}
                   name={candidate.name}

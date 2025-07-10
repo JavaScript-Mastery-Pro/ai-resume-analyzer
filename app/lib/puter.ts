@@ -71,7 +71,7 @@ interface PuterStore {
       imageURL?: string,
       testMode?: boolean,
       options?: PuterChatOptions
-    ) => Promise<Object | undefined>;
+    ) => Promise<AIResponse | undefined>;
     img2txt: (
       image: string | File | Blob,
       testMode?: boolean
@@ -84,7 +84,7 @@ interface PuterStore {
     list: (
       pattern: string,
       returnValues?: boolean
-    ) => Promise<string[] | undefined>;
+    ) => Promise<string[] | KVItem[] | undefined>;
     flush: () => Promise<boolean | undefined>;
   };
 
@@ -316,7 +316,7 @@ export const usePuterStore = create<PuterStore>((set, get) => {
       return;
     }
     // return puter.ai.chat(prompt, imageURL, testMode, options);
-    return puter.ai.chat(prompt);
+    return puter.ai.chat(prompt) as Promise<AIResponse | undefined>;
   };
 
   const img2txt = async (image: string | File | Blob, testMode?: boolean) => {
