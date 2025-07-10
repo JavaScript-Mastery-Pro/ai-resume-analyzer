@@ -13,6 +13,7 @@ async function loadPdfJs(): Promise<any> {
   if (loadPromise) return loadPromise;
 
   isLoading = true;
+  // @ts-expect-error - pdfjs-dist/build/pdf.mjs is not a module
   loadPromise = import("pdfjs-dist/build/pdf.mjs").then((lib) => {
     // Set the worker source to use local file
     lib.GlobalWorkerOptions.workerSrc = "/pdf.worker.min.mjs";
@@ -34,16 +35,13 @@ export async function convertPdfToImage(
     const pdf = await lib.getDocument({ data: arrayBuffer }).promise;
     const page = await pdf.getPage(1);
 
-    // Increase scale for higher quality (was 2, now 4)
     const viewport = page.getViewport({ scale: 4 });
     const canvas = document.createElement("canvas");
     const context = canvas.getContext("2d");
 
-    // Set canvas dimensions
     canvas.width = viewport.width;
     canvas.height = viewport.height;
 
-    // Improve rendering quality
     if (context) {
       context.imageSmoothingEnabled = true;
       context.imageSmoothingQuality = "high";
@@ -55,7 +53,7 @@ export async function convertPdfToImage(
       canvas.toBlob(
         (blob) => {
           if (blob) {
-            // Create a File from the blob with the same name
+            // Create a File from the blob with the same name as the pdf
             const originalName = file.name.replace(/\.pdf$/i, "");
             const imageFile = new File([blob], `${originalName}.png`, {
               type: "image/png",

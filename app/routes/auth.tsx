@@ -1,9 +1,17 @@
 import { useEffect } from "react";
 import { useLocation, useNavigate } from "react-router";
 import { usePuterStore } from "../lib/puter";
+import type { Route } from "./+types/auth";
+
+export function meta({}: Route.MetaArgs) {
+  return [
+    { title: "Resumind | Authentication" },
+    { name: "description", content: "Log in to your account" },
+  ];
+}
 
 const AuthPage = () => {
-  const { auth, isLoading, error, clearError } = usePuterStore();
+  const { auth, isLoading } = usePuterStore();
   const location = useLocation();
   const next = location.search.split("next=")[1];
   const navigate = useNavigate();
@@ -15,10 +23,10 @@ const AuthPage = () => {
   }, [auth.isAuthenticated, next]);
 
   return (
-    <main className="relative bg-gradient">
+    <main className="relative bg-[url('/images/bg-auth.svg')] bg-cover">
       <section className="flex flex-col items-center gap-8 pt-12 h-screen justify-center">
         <div className="flex flex-col items-center gap-2">
-          <h1 className="text-6xl font-bold text-gradient">Welcome Back</h1>
+          <h1 className="text-6xl font-bold text-gradient">Welcome</h1>
           <h2 className="text-3xl text-dark-200">
             Log In to Continue Your Job Journey
           </h2>
