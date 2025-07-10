@@ -18,24 +18,19 @@ const ResumeCard = ({ resume }: { resume: Resume }) => {
     setScore(resume.feedback.overallScore);
   }, [resume.imagePath]);
   return (
-    <Link
-      to={`/resume/${resume.id}`}
-      className="flex flex-col gap-8 max-w-2xl bg-white rounded-2xl p-4 w-full"
-    >
-      <div className="flex flex-row gap-2 justify-between min-h-[110px] max-sm:flex-col items-center">
+    <Link to={`/resume/${resume.id}`} className="resume-card">
+      <div className="resume-card-header">
         <div className="flex-1 min-w-0">
           {resume.companyName && (
-            <h2 className="text-2xl font-bold break-words">
+            <h2 className="!text-black font-bold break-words">
               {resume.companyName}
             </h2>
           )}
           {resume.jobTitle && (
-            <h3 className="text-lg text-gray-500 break-words">
-              {resume.jobTitle}
-            </h3>
+            <h3 className="text-lg break-words">{resume.jobTitle}</h3>
           )}
           {!resume.companyName && !resume.jobTitle && (
-            <h2 className="text-2xl font-bold">Resume</h2>
+            <h2 className="!text-black font-bold">Resume</h2>
           )}
         </div>
         <div className="flex-shrink-0">

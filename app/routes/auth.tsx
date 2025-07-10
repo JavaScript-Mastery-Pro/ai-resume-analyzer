@@ -23,36 +23,26 @@ const AuthPage = () => {
   }, [auth.isAuthenticated, next]);
 
   return (
-    <main className="bg-[url('/images/bg-auth.svg')] bg-cover">
-      <section className="flex flex-col items-center gap-8 pt-12 h-screen justify-center">
-        <div className="flex flex-col items-center gap-2  text-center">
-          <h1 className="text-6xl font-bold text-gradient">Welcome</h1>
-          <h2 className="text-3xl text-dark-200">
-            Log In to Continue Your Job Journey
-          </h2>
+    <main className="bg-[url('/images/bg-auth.svg')] bg-cover min-h-screen flex items-center justify-center">
+      <section className="flex flex-col gap-8">
+        <div className="flex flex-col items-center gap-2 text-center">
+          <h1>Welcome</h1>
+          <h2>Log In to Continue Your Job Journey</h2>
         </div>
-        <div className="flex flex-col items-center gap-2 mt-10">
+        <div>
           {isLoading ? (
-            <button className="primary-gradient rounded-full py-4 px-8 cursor-pointer w-[600px] animate-pulse">
-              <p className="text-3xl font-semibold text-white">
-                Signing You In...
-              </p>
+            <button className="auth-button animate-pulse">
+              <p>Signing You In...</p>
             </button>
           ) : (
             <>
               {auth.isAuthenticated ? (
-                <button
-                  className="primary-gradient rounded-full py-4 px-8 cursor-pointer w-[600px] max-md:w-full"
-                  onClick={auth.signOut}
-                >
-                  <p className="text-white text-3xl font-semibold">Log Out</p>
+                <button className="auth-button" onClick={auth.signOut}>
+                  <p>Log Out</p>
                 </button>
               ) : (
-                <button
-                  className="primary-gradient rounded-full py-4 px-8 cursor-pointer w-[600px] max-md:w-full"
-                  onClick={auth.signIn}
-                >
-                  <p className="text-white text-3xl font-semibold">Log In</p>
+                <button className="auth-button" onClick={auth.signIn}>
+                  <p>Log In</p>
                 </button>
               )}
             </>

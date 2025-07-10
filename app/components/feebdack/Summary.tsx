@@ -49,28 +49,28 @@ const Category = ({ title, score }: { title: string; score: number }) => {
 const ScoreBadge = ({ score }: { score: number }) => {
   if (score > 69) {
     return (
-      <div className="flex flex-row items-center justify-center py-1 px-2 gap-4 bg-green-200 rounded-[96px] ">
+      <div className="score-badge bg-green-200">
         <p className="text-xs text-green-700 font-semibold">Strong</p>
       </div>
     );
   }
   if (score >= 50) {
     return (
-      <div className="flex flex-row items-center justify-center py-1 px-2 gap-4 bg-yellow-200 rounded-[96px] ">
+      <div className="score-badge bg-yellow-200">
         <p className="text-xs text-yellow-700 font-semibold">Good Start</p>
       </div>
     );
   }
   if (score < 50) {
     return (
-      <div className="flex flex-row items-center justify-center py-1 px-2 gap-4 bg-red-200 rounded-[96px] ">
+      <div className="score-badge bg-red-200">
         <p className="text-xs text-red-700 font-semibold">Needs Work</p>
       </div>
     );
   }
 
   return (
-    <div className="flex flex-row items-center justify-center py-1 px-2 gap-4 bg-red-200 rounded-[96px] ">
+    <div className="score-badge bg-red-200">
       <p className="text-xs text-red-700 font-semibold">{score}</p>
     </div>
   );

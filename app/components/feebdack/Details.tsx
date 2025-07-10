@@ -80,7 +80,7 @@ const ScoreBadge = ({ score }: { score: number }) => {
   return (
     <div
       className={cn(
-        "flex flex-row gap-1 items-center px-2 py-0.5 rounded-[96px] text-pink-500",
+        "flex flex-row gap-1 items-center px-2 py-0.5 rounded-[96px]",
         score > 69
           ? "bg-green-200"
           : score > 39

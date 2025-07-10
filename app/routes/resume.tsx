@@ -48,17 +48,17 @@ const ResumePage = () => {
   }, [id]);
 
   return (
-    <main className="pt-10 min-h-screen">
+    <main>
       <Navbar />
       <div className="flex flex-row w-full max-lg:flex-col-reverse ">
-        <section className="lg:min-h-screen flex flex-col items-center gap-8 pt-12 w-1/2 px-5 bg-[url('/images/bg-smol.svg')] bg-cover max-lg:w-full">
-          <div className="sticky top-10 bg-blue-200/40 p-2 rounded-2xl m-10 max-sm:m-0">
+        <section className="feedback-section bg-[url('/images/bg-smol.svg')] bg-cover min-h-screen">
+          <div className="sticky top-10 gradient-border p-2 rounded-2xl m-10 max-sm:m-0">
             <div className="w-full h-full rounded-2xl p-2">
               {imageUrl && resumeUrl && (
                 <a href={resumeUrl} target="_blank">
                   <img
                     src={imageUrl}
-                    alt="candidate"
+                    alt="resume"
                     className="w-full h-full object-contain"
                   />
                 </a>
@@ -66,8 +66,8 @@ const ResumePage = () => {
             </div>
           </div>
         </section>
-        <section className="flex flex-col gap-8 pt-12  w-1/2 px-8 py-10 max-lg:w-full">
-          <h2 className="text-4xl font-bold">Resume Review</h2>
+        <section className="feedback-section">
+          <h2 className="text-4xl !text-black font-bold">Resume Review</h2>
           {feedback && (
             <div className="flex flex-col gap-8">
               <Summary feedback={feedback} />

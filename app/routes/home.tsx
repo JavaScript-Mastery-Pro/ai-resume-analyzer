@@ -36,19 +36,15 @@ export default function Home() {
   }, []);
 
   return (
-    <main className="bg-[url('/images/bg-main.svg')] bg-cover min-h-screen pt-10">
+    <main className="bg-[url('/images/bg-main.svg')] bg-cover">
       <Navbar />
-      <section className="flex flex-col items-center gap-8 pt-12 mx-15">
-        <div className="flex flex-col items-center gap-8 max-w-2xl text-center">
-          <h1 className="text-6xl font-bold text-gradient">
-            Browse Your Resumes
-          </h1>
-          <h2 className="text-3xl text-dark-200">
-            Click on a resume to view detailed feedback
-          </h2>
+      <section className="main-section">
+        <div className="page-heading">
+          <h1>Browse Your Resumes</h1>
+          <h2>Click on a resume to view detailed feedback</h2>
         </div>
         {resumes.length > 0 && (
-          <div className="flex flex-row max-lg:flex-col gap-6">
+          <div className="resumes-section">
             {resumes.map((resume) => (
               <ResumeCard key={resume.id} resume={resume} />
             ))}

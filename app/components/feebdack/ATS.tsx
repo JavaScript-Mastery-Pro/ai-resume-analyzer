@@ -10,7 +10,7 @@ const ATS = ({
   return (
     <div
       className={cn(
-        "rounded-2xl shadow-md w-full bg-gradient-to-b  to-light-white p-8 flex flex-col gap-4",
+        "rounded-2xl shadow-md w-full bg-gradient-to-b to-light-white p-8 flex flex-col gap-4",
         score > 69
           ? "from-green-100"
           : score > 49

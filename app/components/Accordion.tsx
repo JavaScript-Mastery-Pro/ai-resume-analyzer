@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 import React, { createContext, useContext, useState } from "react";
+import { cn } from "~/lib/utils";
 
 interface AccordionContextType {
   activeItems: string[];
@@ -97,9 +98,9 @@ export const AccordionHeader: React.FC<AccordionHeaderProps> = ({
 
   const defaultIcon = (
     <svg
-      className={`w-5 h-5 transition-transform duration-200 ${
-        isActive ? "rotate-180" : ""
-      }`}
+      className={cn("w-5 h-5 transition-transform duration-200", {
+        "rotate-180": isActive,
+      })}
       fill="none"
       stroke="#98A2B3"
       viewBox="0 0 24 24"

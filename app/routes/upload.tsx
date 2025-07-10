@@ -156,33 +156,26 @@ const UploadPage = () => {
   };
 
   return (
-    <main className="bg-[url('/images/bg-main.svg')] bg-cover pt-10 min-h-screen">
+    <main className="bg-[url('/images/bg-main.svg')] bg-cover">
       <Navbar />
-      <section className="flex flex-col items-center gap-8 pt-12 mx-15">
-        <div className="flex flex-col items-center gap-8 max-w-2xl text-center">
-          <h1 className="text-6xl font-bold text-gradient">
-            Smart feedback for your dream job
-          </h1>
+      <section className="main-section">
+        <div className="page-heading">
+          <h1>Smart feedback for your dream job</h1>
           {isProcessing ? (
-            <p className="text-2xl text-dark-200">{statusText}</p>
+            <h2>{statusText}</h2>
           ) : (
-            <p className="text-2xl text-dark-200">
+            <h2>
               Drop your resume below. We'll analyze it, give you an ATS score,
               and suggest ways to improve.
-            </p>
+            </h2>
           )}
           {!isProcessing && (
-            <form
-              id="upload-form"
-              className="flex flex-col items-start gap-4 w-full"
-              onSubmit={handleSubmit}
-            >
+            <form id="upload-form" onSubmit={handleSubmit}>
               <label htmlFor="company-name">Company Name</label>
               <input
                 type="text"
                 name="company-name"
                 placeholder="Company Name"
-                className="inset-shadow rounded-2xl focus:outline-none w-full p-4 bg-white"
                 id="company-name"
               />
 
@@ -191,7 +184,6 @@ const UploadPage = () => {
                 type="text"
                 name="job-title"
                 placeholder="Job Title"
-                className="inset-shadow rounded-2xl focus:outline-none w-full p-4 bg-white"
                 id="job-title"
               />
 
@@ -200,7 +192,6 @@ const UploadPage = () => {
                 name="job-description"
                 id="job-description"
                 placeholder="Job Description"
-                className="w-full p-4 border border-gray-300  inset-shadow rounded-2xl focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white"
                 rows={5}
               />
 
@@ -208,10 +199,7 @@ const UploadPage = () => {
               <FileUploader onFileSelect={handleFileSelect} />
 
               {file && (
-                <button
-                  className="primary-gradient text-white rounded-full px-4 py-2 cursor-pointer w-full"
-                  type="submit"
-                >
+                <button className="primary-button" type="submit">
                   Save & Analyze Resume
                 </button>
               )}
