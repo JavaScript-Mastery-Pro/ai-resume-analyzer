@@ -325,7 +325,6 @@ export const usePuterStore = create<PuterStore>((set, get) => {
       setError("Puter.js not available");
       return;
     }
-    console.log("img2txt", image, testMode);
     return puter.ai.img2txt(image, testMode);
   };
 

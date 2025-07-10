@@ -7,8 +7,8 @@ import type { Route } from "./+types/home";
 
 export function meta({}: Route.MetaArgs) {
   return [
-    { title: "New React Router App" },
-    { name: "description", content: "Welcome to React Router!" },
+    { title: "Resumind" },
+    { name: "description", content: "Smart feedback for your dream job" },
   ];
 }
 
@@ -26,13 +26,10 @@ export default function Home() {
   useEffect(() => {
     const loadResumes = async () => {
       const resumes = (await kv.list("resume:*", true)) as KVItem[];
-      console.log("-----RESUMES---");
-      console.log(resumes);
       const parsedResumes = resumes?.map((resume) => {
         const data = JSON.parse(resume.value);
         return data as Resume;
       });
-      console.log(parsedResumes);
       setResumes(parsedResumes || []);
     };
     loadResumes();

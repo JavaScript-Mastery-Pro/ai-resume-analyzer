@@ -1,6 +1,14 @@
 import { useEffect } from "react";
 import { useLocation, useNavigate } from "react-router";
 import { usePuterStore } from "../lib/puter";
+import type { Route } from "./+types/auth";
+
+export function meta({}: Route.MetaArgs) {
+  return [
+    { title: "Resumind | Authentication" },
+    { name: "description", content: "Log in to your account" },
+  ];
+}
 
 const AuthPage = () => {
   const { auth, isLoading, error, clearError } = usePuterStore();

@@ -5,15 +5,21 @@ import Details from "~/components/feebdack/Details";
 import Summary from "~/components/feebdack/Summary";
 import Navbar from "~/components/Navbar";
 import { usePuterStore } from "~/lib/puter";
+import type { Route } from "./+types/resume";
+
+export function meta({}: Route.MetaArgs) {
+  return [
+    { title: "Resumind | Upload Resume" },
+    { name: "description", content: "Upload your resume to get feedback" },
+  ];
+}
 
 const ResumePage = () => {
   const { id } = useParams();
-  const [candidate, setCandidate] = useState<any>(null);
   const [feedback, setFeedback] = useState<Feedback | null>(null);
   const { auth, isLoading, error, clearError, fs, kv } = usePuterStore();
   const [resumeUrl, setResumeUrl] = useState<string | null>(null);
   const [imageUrl, setImageUrl] = useState<string | null>(null);
-  const [resumeFileName, setResumeFileName] = useState<string | null>(null);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -24,57 +30,18 @@ const ResumePage = () => {
 
   useEffect(() => {
     const loadResume = async () => {
-      console.log("loading resume", id);
       const resume = await kv.get(`resume:${id}`);
-      console.log(resume);
       if (!resume) return;
       const data = JSON.parse(resume);
-      setCandidate(data);
-      console.log(data);
       const resumeBlob = await fs.read(data.resumePath);
-      const resumeFileName = data.resumePath.split("/").pop();
-      setResumeFileName(resumeFileName);
       if (!resumeBlob) return;
-      console.log("RESUME DEBUG ------------------");
-      console.log("Resume blob type:", typeof resumeBlob);
-      console.log("Resume blob constructor:", resumeBlob.constructor.name);
-      console.log("Resume blob size:", resumeBlob.size);
-      console.log("Resume blob type:", resumeBlob.type);
-      console.log(
-        "Resume blob instanceof ArrayBuffer:",
-        resumeBlob instanceof ArrayBuffer
-      );
-      console.log(
-        "Resume blob instanceof Uint8Array:",
-        resumeBlob instanceof Uint8Array
-      );
-
-      // Read the blob as ArrayBuffer and create a new blob with correct PDF type
-      const arrayBuffer = await resumeBlob.arrayBuffer();
-
-      // Check if it's actually a PDF by looking at the first 4 bytes
-      const uint8Array = new Uint8Array(arrayBuffer);
-      const firstBytes = Array.from(uint8Array.slice(0, 4))
-        .map((b) => b.toString(16).padStart(2, "0"))
-        .join("");
-      console.log("First 4 bytes:", firstBytes);
-      console.log(
-        "Is PDF (should start with 25504446):",
-        firstBytes === "25504446"
-      );
-
-      const pdfBlob = new Blob([arrayBuffer], { type: "application/pdf" });
-      console.log("New PDF blob type:", pdfBlob.type);
-      console.log("New PDF blob size:", pdfBlob.size);
+      const pdfBlob = new Blob([resumeBlob], { type: "application/pdf" });
       const resumeUrl = URL.createObjectURL(pdfBlob);
       setResumeUrl(resumeUrl);
       const imageBlob = await fs.read(data.imagePath);
       if (!imageBlob) return;
       const imageUrl = URL.createObjectURL(imageBlob);
       setImageUrl(imageUrl);
-      console.log("LOADING RESUME");
-      // console.log(data.analysis);
-      // console.log(JSON.parse(data.feedback));
       setFeedback(data.feedback);
     };
     loadResume();

@@ -20,22 +20,17 @@ const UploadPage = () => {
   }, [isLoading]);
 
   const handleFileSelect = (file: File | null) => {
-    console.log(file);
     setFile(file);
   };
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log("Form submitted");
     const form = e.currentTarget.closest("form");
-    console.log(form);
     if (!form) return;
     const formData = new FormData(form);
-    console.log(formData);
     const companyName = formData.get("company-name") as string;
     const jobTitle = formData.get("job-title") as string;
     const jobDescription = formData.get("job-description") as string;
-    console.log(companyName, jobTitle, jobDescription);
     if (!file) {
       return;
     }
@@ -64,8 +59,6 @@ const UploadPage = () => {
 
     setStatusText("Converting to image...");
     const imageFile = await convertPdfToImage(file);
-    console.log(imageFile);
-    console.log(imageFile.file);
 
     if (!imageFile.file) {
       setStatusText("Error: Failed to convert PDF to image");
@@ -74,8 +67,6 @@ const UploadPage = () => {
 
     setStatusText("Uploading the image...");
     const uploadedImage = await fs.upload([imageFile.file]);
-
-    console.log("uploadedImage", uploadedImage);
 
     if (!uploadedImage) {
       setStatusText("Error: Failed to upload image");
@@ -93,13 +84,10 @@ const UploadPage = () => {
       jobDescription: jobDescription,
       feedback: "",
     };
-    console.log(data);
     await kv.set(`resume:${uuid}`, JSON.stringify(data));
 
     setStatusText("Extracting text from image...");
-    console.log("uploadedImage.path", uploadedImage.path);
     const resumeText = await ai.img2txt(uploadedImage.path, false);
-    console.log("resumeText", resumeText);
 
     setStatusText("Analyzing...");
     const feedback = await ai.chat(
@@ -156,9 +144,7 @@ const UploadPage = () => {
       Return the analysis as an JSON object, without any other text. 
       The resume text is: ${resumeText}`
     );
-    console.log(feedback);
-    console.log("parsed");
-    console.log(JSON.parse(feedback!.message.content));
+
     if (!feedback) {
       setStatusText("Error: Failed to analyze resume");
       return;

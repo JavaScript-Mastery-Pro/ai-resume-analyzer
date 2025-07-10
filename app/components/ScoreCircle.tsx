@@ -1,4 +1,4 @@
-const ScoreCircle = ({ score }: { score: number }) => {
+const ScoreCircle = ({ score = 75 }: { score: number }) => {
   const radius = 40;
   const stroke = 8;
   const normalizedRadius = radius - stroke / 2;

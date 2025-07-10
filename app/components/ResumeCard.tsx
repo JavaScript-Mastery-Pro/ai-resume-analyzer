@@ -15,10 +15,6 @@ const ResumeCard = ({ resume }: { resume: Resume }) => {
       setResumeUrl(url);
     };
     loadResume();
-    console.log("RESUME DEBUG ------------------");
-    console.log(resume);
-    console.log(resume.feedback);
-
     setScore(resume.feedback.overallScore);
   }, [resume.imagePath]);
   return (

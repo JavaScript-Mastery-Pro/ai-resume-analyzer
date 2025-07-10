@@ -7,8 +7,6 @@ import {
 } from "../Accordion";
 
 const Details = ({ feedback }: { feedback: Feedback }) => {
-  console.log("FEEDBACK IN DETAILS");
-  console.log(feedback);
   return (
     <div className="flex flex-col gap-4 w-full">
       <Accordion>
