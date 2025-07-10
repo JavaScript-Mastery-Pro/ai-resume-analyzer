@@ -156,7 +156,7 @@ const UploadPage = () => {
   };
 
   return (
-    <main className="bg-[url('/images/bg-main.svg')] bg-cover bg-center pt-10 min-h-screen py-10">
+    <main className="bg-[url('/images/bg-main.svg')] bg-cover pt-10 min-h-screen">
       <Navbar />
       <section className="flex flex-col items-center gap-8 pt-12 mx-15">
         <div className="flex flex-col items-center gap-8 max-w-2xl text-center">

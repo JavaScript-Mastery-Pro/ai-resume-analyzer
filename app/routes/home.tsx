@@ -36,7 +36,7 @@ export default function Home() {
   }, []);
 
   return (
-    <main className="bg-[url('/images/bg-main.svg')] bg-cover bg-center min-h-screen pt-10">
+    <main className="bg-[url('/images/bg-main.svg')] bg-cover min-h-screen pt-10">
       <Navbar />
       <section className="flex flex-col items-center gap-8 pt-12 mx-15">
         <div className="flex flex-col items-center gap-8 max-w-2xl text-center">

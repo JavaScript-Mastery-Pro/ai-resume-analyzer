@@ -50,10 +50,10 @@ const ResumePage = () => {
   return (
     <main className="pt-10 min-h-screen">
       <Navbar />
-      <div className="flex flex-row w-full max-lg:flex-col-reverse items-center">
-        <section className=" lg:sticky lg:top-0 lg:min-h-screen flex flex-col items-center gap-8 pt-12  w-1/2 px-5 bg-[url('/images/bg-smol.svg')] bg-cover max-lg:w-full">
-          <div className="bg-blue-200/40 p-2 rounded-2xl m-10 max-sm:m-0">
-            <div className="w-full h-full rounded-2xl p-2 ">
+      <div className="flex flex-row w-full max-lg:flex-col-reverse ">
+        <section className="lg:min-h-screen flex flex-col items-center gap-8 pt-12 w-1/2 px-5 bg-[url('/images/bg-smol.svg')] bg-cover max-lg:w-full">
+          <div className="sticky top-10 bg-blue-200/40 p-2 rounded-2xl m-10 max-sm:m-0">
+            <div className="w-full h-full rounded-2xl p-2">
               {imageUrl && resumeUrl && (
                 <a href={resumeUrl} target="_blank">
                   <img
