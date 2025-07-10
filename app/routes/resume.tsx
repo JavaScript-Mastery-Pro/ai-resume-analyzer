@@ -17,7 +17,7 @@ export function meta({}: Route.MetaArgs) {
 const ResumePage = () => {
   const { id } = useParams();
   const [feedback, setFeedback] = useState<Feedback | null>(null);
-  const { auth, isLoading, error, clearError, fs, kv } = usePuterStore();
+  const { auth, isLoading, fs, kv } = usePuterStore();
   const [resumeUrl, setResumeUrl] = useState<string | null>(null);
   const [imageUrl, setImageUrl] = useState<string | null>(null);
   const navigate = useNavigate();

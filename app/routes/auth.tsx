@@ -11,7 +11,7 @@ export function meta({}: Route.MetaArgs) {
 }
 
 const AuthPage = () => {
-  const { auth, isLoading, error, clearError } = usePuterStore();
+  const { auth, isLoading } = usePuterStore();
   const location = useLocation();
   const next = location.search.split("next=")[1];
   const navigate = useNavigate();
