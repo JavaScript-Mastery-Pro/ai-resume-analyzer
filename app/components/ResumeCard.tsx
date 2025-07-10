@@ -22,7 +22,7 @@ const ResumeCard = ({ resume }: { resume: Resume }) => {
       to={`/resume/${resume.id}`}
       className="flex flex-col gap-8 max-w-2xl bg-white rounded-2xl p-4 w-full"
     >
-      <div className="flex flex-row gap-2 justify-between min-h-[110px]">
+      <div className="flex flex-row gap-2 justify-between min-h-[110px] max-sm:flex-col items-center">
         <div className="flex-1 min-w-0">
           {resume.companyName && (
             <h2 className="text-2xl font-bold break-words">
@@ -48,7 +48,7 @@ const ResumeCard = ({ resume }: { resume: Resume }) => {
             <img
               src={resumeUrl}
               alt="resume"
-              className="w-full h-[350px] object-cover object-top"
+              className="w-full h-[350px] max-sm:h-[200px] object-cover object-top"
             />
           )}
         </div>
