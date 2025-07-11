@@ -74,7 +74,7 @@ const FileUploader = ({ onFileSelect }: FileUploaderProps) => {
       {/* Drag & Drop Area */}
       <div
         className={`
-          relative p-8 text-center transition-all duration-700 cursor-pointer bg-white rounded-2xl min-h-[208px]
+          uplader-drag-area
           ${isDragOver ? "gradient-hover" : "hover:gradient-hover"}
         `}
         onDragOver={handleDragOver}
@@ -96,7 +96,7 @@ const FileUploader = ({ onFileSelect }: FileUploaderProps) => {
 
           {selectedFile ? (
             <div
-              className="flex items-center justify-between p-3 bg-gray-50 rounded-2xl"
+              className="uploader-selected-file"
               onClick={(e) => e.stopPropagation()}
             >
               <div className="flex items-center space-x-3">

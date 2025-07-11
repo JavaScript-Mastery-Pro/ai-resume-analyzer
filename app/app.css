@@ -59,9 +59,14 @@ form {
   .primary-button {
     @apply primary-gradient text-white rounded-full px-4 py-2 cursor-pointer w-full;
   }
-
   .resume-nav {
     @apply flex flex-row justify-between items-center p-4 border-b border-gray-200;
+  }
+  .resume-summary {
+    @apply flex flex-row items-center justify-center p-4 gap-4;
+    .category {
+      @apply flex flex-row gap-2 items-center bg-gray-50 rounded-2xl p-4 w-full justify-between;
+    }
   }
   .back-button {
     @apply flex flex-row items-center gap-2 border border-gray-200 rounded-lg p-2 shadow-sm;
@@ -102,6 +107,13 @@ form {
   .form-div {
     @apply flex flex-col gap-2 w-full items-start;
   }
+
+  .uplader-drag-area {
+    @apply relative p-8 text-center transition-all duration-700 cursor-pointer bg-white rounded-2xl min-h-[208px];
+  }
+  .uploader-selected-file {
+    @apply flex items-center justify-between p-3 bg-gray-50 rounded-2xl;
+  }
 }
 
 @utility bg-gradient {
@@ -113,7 +125,7 @@ form {
 }
 
 @utility gradient-hover {
-  @apply bg-gradient-to-b from-light-blue-100/10 to-light-blue-200/30;
+  @apply bg-gradient-to-b from-light-blue-100 to-light-blue-200;
 }
 
 @utility primary-gradient {

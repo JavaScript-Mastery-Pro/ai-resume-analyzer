@@ -43,9 +43,11 @@ const ATS = ({
         {suggestions.map((suggestion, index) => (
           <div className="flex flex-row gap-2 items-center" key={index}>
             <img
-              src={`/icons/${
-                suggestion.type === "good" ? "check.svg" : "warning.svg"
-              }`}
+              src={
+                suggestion.type === "good"
+                  ? "/icons/check.svg"
+                  : "/icons/warning.svg"
+              }
               alt="ATS"
               className="w-4 h-4"
             />
