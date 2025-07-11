@@ -23,6 +23,17 @@ interface KVItem {
   value: string;
 }
 
+interface ChatMessageContent {
+  type: "file" | "text";
+  puter_path?: string;
+  text?: string;
+}
+
+interface ChatMessage {
+  role: "user" | "assistant" | "system";
+  content: string | ChatMessageContent[];
+}
+
 interface PuterChatOptions {
   model?: string;
   stream?: boolean;

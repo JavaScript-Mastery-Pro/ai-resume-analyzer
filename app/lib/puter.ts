@@ -21,8 +21,8 @@ declare global {
       };
       ai: {
         chat: (
-          prompt: string,
-          imageURL?: string,
+          prompt: string | ChatMessage[],
+          imageURL?: string | PuterChatOptions,
           testMode?: boolean,
           options?: PuterChatOptions
         ) => Promise<Object>;
@@ -67,10 +67,14 @@ interface PuterStore {
   };
   ai: {
     chat: (
-      prompt: string,
-      imageURL?: string,
+      prompt: string | ChatMessage[],
+      imageURL?: string | PuterChatOptions,
       testMode?: boolean,
       options?: PuterChatOptions
+    ) => Promise<AIResponse | undefined>;
+    feedback: (
+      path: string,
+      message: string
     ) => Promise<AIResponse | undefined>;
     img2txt: (
       image: string | File | Blob,
@@ -269,6 +273,7 @@ export const usePuterStore = create<PuterStore>((set, get) => {
     }
     return puter.fs.write(path, data);
   };
+
   const readDir = async (path: string) => {
     const puter = getPuter();
     if (!puter) {
@@ -277,6 +282,7 @@ export const usePuterStore = create<PuterStore>((set, get) => {
     }
     return puter.fs.readdir(path);
   };
+
   const readFile = async (path: string) => {
     const puter = getPuter();
     if (!puter) {
@@ -305,10 +311,10 @@ export const usePuterStore = create<PuterStore>((set, get) => {
   };
 
   const chat = async (
-    prompt: string,
-    imageURL: string = "",
-    testMode: boolean = false,
-    options: PuterChatOptions = { model: "gpt-4.1-nano" }
+    prompt: string | ChatMessage[],
+    imageURL?: string | PuterChatOptions,
+    testMode?: boolean,
+    options?: PuterChatOptions
   ) => {
     const puter = getPuter();
     if (!puter) {
@@ -316,7 +322,35 @@ export const usePuterStore = create<PuterStore>((set, get) => {
       return;
     }
     // return puter.ai.chat(prompt, imageURL, testMode, options);
-    return puter.ai.chat(prompt) as Promise<AIResponse | undefined>;
+    return puter.ai.chat(prompt, imageURL, testMode, options) as Promise<
+      AIResponse | undefined
+    >;
+  };
+
+  const feedback = async (path: string, message: string) => {
+    const puter = getPuter();
+    if (!puter) {
+      setError("Puter.js not available");
+      return;
+    }
+    return puter.ai.chat(
+      [
+        {
+          role: "user",
+          content: [
+            {
+              type: "file",
+              puter_path: path,
+            },
+            {
+              type: "text",
+              text: message,
+            },
+          ],
+        },
+      ],
+      { model: "gpt-4o-mini" }
+    ) as Promise<AIResponse | undefined>;
   };
 
   const img2txt = async (image: string | File | Blob, testMode?: boolean) => {
@@ -398,12 +432,12 @@ export const usePuterStore = create<PuterStore>((set, get) => {
     },
     ai: {
       chat: (
-        prompt: string,
-        imageURL?: string,
-
+        prompt: string | ChatMessage[],
+        imageURL?: string | PuterChatOptions,
         testMode?: boolean,
         options?: PuterChatOptions
       ) => chat(prompt, imageURL, testMode, options),
+      feedback: (path: string, message: string) => feedback(path, message),
       img2txt: (image: string | File | Blob, testMode?: boolean) =>
         img2txt(image, testMode),
     },

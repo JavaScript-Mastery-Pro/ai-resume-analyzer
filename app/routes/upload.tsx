@@ -86,11 +86,9 @@ const UploadPage = () => {
     };
     await kv.set(`resume:${uuid}`, JSON.stringify(data));
 
-    setStatusText("Extracting text from image...");
-    const resumeText = await ai.img2txt(uploadedImage.path, false);
-
     setStatusText("Analyzing...");
-    const feedback = await ai.chat(
+    const feedback = await ai.feedback(
+      uploadedFile.path,
       `You are an expert in ATS (Applicant Tracking System) and resume analysis.
       Analyze and rate the following resume. 
       Be thorough and detailed. Don't be afraid to point out any mistakes or areas for improvement.
@@ -141,8 +139,9 @@ const UploadPage = () => {
           }[]; //give 3-4 tips
         };
       }
-      Return the analysis as an JSON object, without any other text. 
-      The resume text is: ${resumeText}`
+      Return the analysis as an JSON object, without any other text and without the backticks.
+      Do not include any other text or comments.
+    `
     );
 
     if (!feedback) {
