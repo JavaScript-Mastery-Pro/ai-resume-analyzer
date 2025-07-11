@@ -70,7 +70,7 @@ const FileUploader = ({ onFileSelect }: FileUploaderProps) => {
   };
 
   return (
-    <div className="w-full gradient-border rounded-2xl p-4">
+    <div className="w-full gradient-border">
       {/* Drag & Drop Area */}
       <div
         className={`
@@ -120,6 +120,7 @@ const FileUploader = ({ onFileSelect }: FileUploaderProps) => {
                 <span className="font-semibold">Click to upload </span>or drag
                 and drop
               </p>
+              <p className="text-lg text-gray-500">PDF (max. 20MB)</p>
             </div>
           )}
         </div>

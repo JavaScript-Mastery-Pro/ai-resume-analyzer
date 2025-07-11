@@ -69,7 +69,7 @@ const CategoryHeader = ({
   categoryScore: number;
 }) => {
   return (
-    <div className="flex flex-row gap-4 items-center">
+    <div className="flex flex-row gap-4 items-center py-2">
       <p className="text-2xl font-semibold">{title}</p>
       <ScoreBadge score={categoryScore} />
     </div>
@@ -82,10 +82,10 @@ const ScoreBadge = ({ score }: { score: number }) => {
       className={cn(
         "flex flex-row gap-1 items-center px-2 py-0.5 rounded-[96px]",
         score > 69
-          ? "bg-green-200"
+          ? "bg-badge-green"
           : score > 39
-          ? "bg-yellow-200"
-          : "bg-red-200"
+          ? "bg-badge-yellow"
+          : "bg-badge-red"
       )}
     >
       <img
@@ -97,10 +97,10 @@ const ScoreBadge = ({ score }: { score: number }) => {
         className={cn(
           "text-sm font-medium",
           score > 69
-            ? "text-green-600"
+            ? "text-badge-green-text"
             : score > 39
-            ? "text-yellow-600"
-            : "text-red-600"
+            ? "text-badge-yellow-text"
+            : "text-badge-red-text"
         )}
       >
         {score}/100
@@ -116,7 +116,7 @@ const CategoryContent = ({
 }) => {
   return (
     <div className="flex flex-col gap-4 items-center w-full">
-      <div className="bg-gray-50 w-full rounded-lg px-3.5 py-2.5 grid grid-cols-2 gap-4">
+      <div className="bg-gray-50 w-full rounded-lg px-5 py-4 grid grid-cols-2 gap-4">
         {tips.map((tip, index) => (
           <div className="flex flex-row gap-2 items-center" key={index}>
             <img
@@ -124,13 +124,13 @@ const CategoryContent = ({
                 tip.type === "good" ? "/icons/check.svg" : "/icons/warning.svg"
               }
               alt="score"
-              className="w-4 h-4"
+              className="size-5"
             />
             <p className="text-xl text-gray-500 ">{tip.tip}</p>
           </div>
         ))}
       </div>
-      <div className="flex flex-col gap-4">
+      <div className="flex flex-col gap-4 w-full">
         {tips.map((tip, index) => (
           <div
             key={index + tip.tip}
@@ -149,11 +149,11 @@ const CategoryContent = ({
                     : "/icons/warning.svg"
                 }
                 alt="score"
-                className="size-4"
+                className="size-5"
               />
-              <p className="text-xl">{tip.tip}</p>
+              <p className="text-xl font-semibold">{tip.tip}</p>
             </div>
-            <p className="">{tip.explanation}</p>
+            <p>{tip.explanation}</p>
           </div>
         ))}
       </div>

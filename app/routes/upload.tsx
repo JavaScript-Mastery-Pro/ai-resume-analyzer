@@ -161,41 +161,53 @@ const UploadPage = () => {
         <div className="page-heading">
           <h1>Smart feedback for your dream job</h1>
           {isProcessing ? (
-            <h2>{statusText}</h2>
+            <>
+              <h2>{statusText}</h2>
+              <img src="/images/resume-scan.gif" className="w-full" />
+            </>
           ) : (
-            <h2>
-              Drop your resume below. We'll analyze it, give you an ATS score,
-              and suggest ways to improve.
-            </h2>
+            <h2>Drop your resume for an ATS score and improvement tips.</h2>
           )}
           {!isProcessing && (
-            <form id="upload-form" onSubmit={handleSubmit}>
-              <label htmlFor="company-name">Company Name</label>
-              <input
-                type="text"
-                name="company-name"
-                placeholder="Company Name"
-                id="company-name"
-              />
+            <form
+              id="upload-form"
+              onSubmit={handleSubmit}
+              className="flex flex-col gap-4"
+            >
+              <div className="form-div">
+                <label htmlFor="company-name">Company Name</label>
+                <input
+                  type="text"
+                  name="company-name"
+                  placeholder="Company Name"
+                  id="company-name"
+                />
+              </div>
 
-              <label htmlFor="job-title">Job Title</label>
-              <input
-                type="text"
-                name="job-title"
-                placeholder="Job Title"
-                id="job-title"
-              />
+              <div className="form-div">
+                <label htmlFor="job-title">Job Title</label>
+                <input
+                  type="text"
+                  name="job-title"
+                  placeholder="Job Title"
+                  id="job-title"
+                />
+              </div>
 
-              <label htmlFor="job-description">Job Description</label>
-              <textarea
-                name="job-description"
-                id="job-description"
-                placeholder="Job Description"
-                rows={5}
-              />
+              <div className="form-div">
+                <label htmlFor="job-description">Job Description</label>
+                <textarea
+                  name="job-description"
+                  id="job-description"
+                  placeholder="Job Description"
+                  rows={5}
+                />
+              </div>
 
-              <label htmlFor="job-description">Upload Resume</label>
-              <FileUploader onFileSelect={handleFileSelect} />
+              <div className="form-div">
+                <label htmlFor="job-description">Upload Resume</label>
+                <FileUploader onFileSelect={handleFileSelect} />
+              </div>
 
               {file && (
                 <button className="primary-button" type="submit">

@@ -4,7 +4,7 @@ import ScoreGauge from "../ScoreGauge";
 const Summary = ({ feedback }: { feedback: Feedback }) => {
   return (
     <div className="bg-white rounded-2xl shadow-md w-full">
-      <div className="flex flex-row items-center justify-center p-4 gap-4">
+      <div className="flex flex-row items-center p-4 gap-8">
         <ScoreGauge score={feedback.overallScore} />
         <div className="flex flex-col gap-2">
           <h2 className="text-2xl font-bold">Your Resume Score</h2>
@@ -49,29 +49,31 @@ const Category = ({ title, score }: { title: string; score: number }) => {
 const ScoreBadge = ({ score }: { score: number }) => {
   if (score > 69) {
     return (
-      <div className="score-badge bg-green-200">
-        <p className="text-xs text-green-700 font-semibold">Strong</p>
+      <div className="score-badge bg-badge-green">
+        <p className="text-xs text-badge-green-text font-semibold">Strong</p>
       </div>
     );
   }
   if (score >= 50) {
     return (
-      <div className="score-badge bg-yellow-200">
-        <p className="text-xs text-yellow-700 font-semibold">Good Start</p>
+      <div className="score-badge bg-badge-yellow">
+        <p className="text-xs text-badge-yellow-text font-semibold">
+          Good Start
+        </p>
       </div>
     );
   }
   if (score < 50) {
     return (
-      <div className="score-badge bg-red-200">
-        <p className="text-xs text-red-700 font-semibold">Needs Work</p>
+      <div className="score-badge bg-badge-red">
+        <p className="text-xs text-badge-red-text font-semibold">Needs Work</p>
       </div>
     );
   }
 
   return (
-    <div className="score-badge bg-red-200">
-      <p className="text-xs text-red-700 font-semibold">{score}</p>
+    <div className="score-badge bg-badge-red">
+      <p className="text-xs text-badge-red-text font-semibold">{score}</p>
     </div>
   );
 };

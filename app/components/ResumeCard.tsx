@@ -18,7 +18,10 @@ const ResumeCard = ({ resume }: { resume: Resume }) => {
     setScore(resume.feedback.overallScore);
   }, [resume.imagePath]);
   return (
-    <Link to={`/resume/${resume.id}`} className="resume-card">
+    <Link
+      to={`/resume/${resume.id}`}
+      className="resume-card animate-in fade-in duration-1000"
+    >
       <div className="resume-card-header">
         <div className="flex flex-col gap-2">
           {resume.companyName && (
@@ -39,17 +42,19 @@ const ResumeCard = ({ resume }: { resume: Resume }) => {
           <ScoreCircle score={score} />
         </div>
       </div>
-      <div className="gradient-border p-4 rounded-2xl">
-        <div className=" w-full h-full">
-          {resumeUrl && (
-            <img
-              src={resumeUrl}
-              alt="resume"
-              className="w-full h-[350px] max-sm:h-[200px] object-cover object-top"
-            />
-          )}
+      {resumeUrl && (
+        <div className="gradient-border animate-in fade-in duration-1000">
+          <div className=" w-full h-full">
+            {resumeUrl && (
+              <img
+                src={resumeUrl}
+                alt="resume"
+                className="w-full h-[350px] max-sm:h-[200px] object-cover object-top"
+              />
+            )}
+          </div>
         </div>
-      </div>
+      )}
     </Link>
   );
 };

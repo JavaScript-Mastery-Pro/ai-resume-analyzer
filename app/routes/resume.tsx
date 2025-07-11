@@ -1,9 +1,8 @@
 import { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router";
+import { Link, useNavigate, useParams } from "react-router";
 import ATS from "~/components/feebdack/ATS";
 import Details from "~/components/feebdack/Details";
 import Summary from "~/components/feebdack/Summary";
-import Navbar from "~/components/Navbar";
 import { usePuterStore } from "~/lib/puter";
 import type { Route } from "./+types/resume";
 
@@ -48,28 +47,33 @@ const ResumePage = () => {
   }, [id]);
 
   return (
-    <main>
-      <Navbar />
-      <div className="flex flex-row w-full max-lg:flex-col-reverse ">
-        <section className="feedback-section bg-[url('/images/bg-smol.svg')] bg-cover min-h-screen">
-          <div className="sticky top-10 gradient-border p-2 rounded-2xl m-10 max-sm:m-0">
-            <div className="w-full h-full rounded-2xl p-2">
-              {imageUrl && resumeUrl && (
-                <a href={resumeUrl} target="_blank">
-                  <img
-                    src={imageUrl}
-                    alt="resume"
-                    className="w-full h-full object-contain"
-                  />
-                </a>
-              )}
+    <main className="!pt-0">
+      <nav className="resume-nav">
+        <Link to="/" className="back-button">
+          <img src="/icons/back.svg" alt="logo" className="w-2.5 h-2.5" />
+          <span className="text-gray-800 text-sm font-semibold">
+            Back to Homepage
+          </span>
+        </Link>
+      </nav>
+      <div className="flex flex-row w-full max-lg:flex-col-reverse">
+        <section className="feedback-section bg-[url('/images/bg-small.svg')] bg-cover h-[100vh] sticky top-0 items-center justify-center">
+          {imageUrl && resumeUrl && (
+            <div className="animate-in fade-in duration-1000 gradient-border max-sm:m-0 h-[90%] max-2xl:h-fit w-fit">
+              <a href={resumeUrl} target="_blank">
+                <img
+                  src={imageUrl}
+                  className="w-full h-full object-contain rounded-2xl"
+                  title="resume"
+                />
+              </a>
             </div>
-          </div>
+          )}
         </section>
         <section className="feedback-section">
           <h2 className="text-4xl !text-black font-bold">Resume Review</h2>
-          {feedback && (
-            <div className="flex flex-col gap-8">
+          {feedback ? (
+            <div className="flex flex-col gap-8 animate-in fade-in duration-1000">
               <Summary feedback={feedback} />
               <ATS
                 score={feedback.ATS.score || 0}
@@ -77,6 +81,8 @@ const ResumePage = () => {
               />
               <Details feedback={feedback} />
             </div>
+          ) : (
+            <img src="/images/resume-scan-2.gif" className="w-full" />
           )}
         </section>
       </div>
