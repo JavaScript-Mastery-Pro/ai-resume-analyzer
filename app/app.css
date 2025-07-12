@@ -85,7 +85,7 @@ form {
   }
 
   .resume-card {
-    @apply flex flex-col gap-8 h-[560px] w-full lg:w-[598px] bg-white rounded-2xl p-4;
+    @apply flex flex-col gap-8 h-[560px] w-full lg:w-[560px] bg-white rounded-2xl p-4;
   }
 
   .resume-card-header {
