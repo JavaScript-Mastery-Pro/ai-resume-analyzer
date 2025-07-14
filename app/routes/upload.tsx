@@ -5,6 +5,14 @@ import Navbar from "~/components/Navbar";
 import { convertPdfToImage } from "~/lib/pdf2img";
 import { usePuterStore } from "~/lib/puter";
 import { generateUUID } from "~/lib/utils";
+import type { Route } from "./+types/upload";
+
+export function meta({}: Route.MetaArgs) {
+  return [
+    { title: "Resumind | Upload Resume" },
+    { name: "description", content: "Upload your resume to get feedback" },
+  ];
+}
 
 const UploadPage = () => {
   const { auth, isLoading, error, fs, ai, kv } = usePuterStore();

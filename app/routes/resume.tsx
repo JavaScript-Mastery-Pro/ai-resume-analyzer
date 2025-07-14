@@ -8,8 +8,8 @@ import type { Route } from "./+types/resume";
 
 export function meta({}: Route.MetaArgs) {
   return [
-    { title: "Resumind | Upload Resume" },
-    { name: "description", content: "Upload your resume to get feedback" },
+    { title: "Resumind | Resume Review" },
+    { name: "description", content: "A detailed overview of your resume" },
   ];
 }
 
