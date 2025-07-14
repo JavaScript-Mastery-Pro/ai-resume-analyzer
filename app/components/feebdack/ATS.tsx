@@ -20,13 +20,13 @@ const ATS = ({
     >
       <div className="flex flex-row gap-4 items-center">
         <img
-          src={`/icons/${
+          src={
             score > 69
-              ? "ats-good.svg"
+              ? "/icons/ats-good.svg"
               : score > 49
-              ? "ats-warning.svg"
-              : "ats-bad.svg"
-          }`}
+              ? "/icons/ats-warning.svg"
+              : "/icons/ats-bad.svg"
+          }
           alt="ATS"
           className="w-10 h-10"
         />
