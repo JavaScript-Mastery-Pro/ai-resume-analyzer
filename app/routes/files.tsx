@@ -52,7 +52,6 @@ const FilesPage = () => {
   return (
     <div>
       Authenticated as: {auth.user?.username}
-      <div>Files will show up here</div>
       <div className="flex flex-col gap-4">
         {files.map((file) => (
           <div key={file.id} className="flex flex-row gap-4">
