@@ -53,7 +53,7 @@ interface AIResponse {
   index: number;
   message: {
     role: string;
-    content: string;
+    content: string | any[];
     refusal: null | string;
     annotations: any[];
   };

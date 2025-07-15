@@ -333,6 +333,7 @@ export const usePuterStore = create<PuterStore>((set, get) => {
       setError("Puter.js not available");
       return;
     }
+
     return puter.ai.chat(
       [
         {
@@ -349,7 +350,7 @@ export const usePuterStore = create<PuterStore>((set, get) => {
           ],
         },
       ],
-      { model: "gpt-4o-mini" }
+      { model: "claude-sonnet-4" }
     ) as Promise<AIResponse | undefined>;
   };
 
