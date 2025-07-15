@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import FileUploader from "~/components/FileUploader";
 import Navbar from "~/components/Navbar";
+import { AIResponseFormat } from "~/constants";
 import { convertPdfToImage } from "~/lib/pdf2img";
 import { usePuterStore } from "~/lib/puter";
 import { generateUUID } from "~/lib/utils";
@@ -103,68 +104,26 @@ const UploadPage = () => {
       Be thorough and detailed. Don't be afraid to point out any mistakes or areas for improvement.
       If there is a lot to improve, don't hesitate to give low scores. This is to help the user to improve their resume.
       If available, use the job description for the job user is applying to to give more detailed feedback.
+      If provided, take the job description into consideration.
       The job title is: ${jobTitle}
       The job description is: ${jobDescription}
       Provide the feedback using the following format:
-      interface Feedback {
-        overallScore: number; //max 100
-        name: string; //the name of the person in the resume
-        summary: string; //give a short summary of what is in the resume, like the name, job title, experience, etc.
-        ATS: {
-          score: number; //rate based on ATS suitability
-          tips: {
-            type: "good" | "improve";
-            tip: string; //give 3-4 tips
-          }[];
-        };
-        toneAndStyle: {
-          score: number; //max 100
-          tips: {
-            type: "good" | "improve";
-            tip: string; //make it a short "title" for the actual explanation
-            explanation: string; //explain in detail here
-          }[]; //give 3-4 tips
-        };
-        content: {
-          score: number; //max 100
-          tips: {
-            type: "good" | "improve";
-            tip: string; //make it a short "title" for the actual explanation
-            explanation: string; //explain in detail here
-          }[]; //give 3-4 tips
-        };
-        structure: {
-          score: number; //max 100
-          tips: {
-            type: "good" | "improve";
-            tip: string; //make it a short "title" for the actual explanation
-            explanation: string; //explain in detail here
-          }[]; //give 3-4 tips
-        };
-        skills: {
-          score: number; //max 100
-          tips: {
-            type: "good" | "improve";
-            tip: string; //make it a short "title" for the actual explanation
-            explanation: string; //explain in detail here
-          }[]; //give 3-4 tips
-        };
-      }
+      ${AIResponseFormat}
       Return the analysis as an JSON object, without any other text and without the backticks.
-      Do not include any other text or comments.
-    `
+      Do not include any other text or comments.`
     );
 
     if (!feedback) {
       setStatusText("Error: Failed to analyze resume");
       return;
     }
-    console.log(feedback);
+
     const feedbackText =
       typeof feedback.message.content === "string"
         ? feedback.message.content
         : feedback.message.content[0].text;
     data.feedback = JSON.parse(feedbackText);
+
     await kv.set(`resume:${uuid}`, JSON.stringify(data));
     setStatusText("Analysis complete, redirecting...");
     navigate(`/resume/${uuid}`);
