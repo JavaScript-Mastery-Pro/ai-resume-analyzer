@@ -1,11 +1,11 @@
 import { useCallback, useRef, useState } from "react";
+import { useDropzone } from "react-dropzone";
 
 interface FileUploaderProps {
   onFileSelect?: (file: File | null) => void;
 }
 
 const FileUploader = ({ onFileSelect }: FileUploaderProps) => {
-  const [isDragOver, setIsDragOver] = useState(false);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -17,27 +17,23 @@ const FileUploader = ({ onFileSelect }: FileUploaderProps) => {
     [onFileSelect]
   );
 
-  const handleDragOver = useCallback((e: React.DragEvent) => {
-    e.preventDefault();
-    setIsDragOver(true);
-  }, []);
-
-  const handleDragLeave = useCallback((e: React.DragEvent) => {
-    e.preventDefault();
-    setIsDragOver(false);
-  }, []);
-
-  const handleDrop = useCallback(
-    (e: React.DragEvent) => {
-      e.preventDefault();
-      setIsDragOver(false);
-      const files = Array.from(e.dataTransfer.files);
-      if (files.length > 0) {
-        handleFile(files[0]);
+  const onDrop = useCallback(
+    (acceptedFiles: File[]) => {
+      if (acceptedFiles.length > 0) {
+        handleFile(acceptedFiles[0]);
       }
     },
     [handleFile]
   );
+
+  const { getRootProps, getInputProps, isDragActive } = useDropzone({
+    onDrop,
+    accept: {
+      "application/pdf": [".pdf"],
+    },
+    maxSize: 20 * 1024 * 1024, // 20MB
+    multiple: false,
+  });
 
   const handleFileInput = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -73,15 +69,14 @@ const FileUploader = ({ onFileSelect }: FileUploaderProps) => {
     <div className="w-full gradient-border">
       {/* Drag & Drop Area */}
       <div
+        {...getRootProps()}
         className={`
           uplader-drag-area
-          ${isDragOver ? "gradient-hover" : "hover:gradient-hover"}
+          ${isDragActive ? "gradient-hover" : "hover:gradient-hover"}
         `}
-        onDragOver={handleDragOver}
-        onDragLeave={handleDragLeave}
-        onDrop={handleDrop}
         onClick={handleClick}
       >
+        <input {...getInputProps()} />
         <input
           ref={fileInputRef}
           type="file"
