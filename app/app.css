@@ -27,11 +27,11 @@ main {
   @apply min-h-screen pt-10;
 }
 h1 {
-  @apply text-6xl  text-gradient leading-tight tracking-[-2px] font-semibold;
+  @apply max-sm:text-[3rem] text-6xl  text-gradient leading-tight xl:tracking-[-2px] font-semibold;
 }
 
 h2 {
-  @apply text-3xl text-dark-200;
+  @apply max-sm:text-xl text-3xl text-dark-200;
 }
 
 label {
@@ -75,17 +75,17 @@ form {
     @apply primary-gradient rounded-full py-4 px-8 cursor-pointer w-[600px] max-md:w-full text-3xl font-semibold text-white;
   }
   .main-section {
-    @apply flex flex-col items-center gap-8 pt-12 mx-15 pb-5;
+    @apply flex flex-col items-center gap-8 pt-12 max-sm:mx-2 mx-15 pb-5;
   }
   .page-heading {
-    @apply flex flex-col items-center gap-8 max-w-4xl text-center;
+    @apply flex flex-col items-center gap-8 max-w-4xl text-center max-sm:gap-4;
   }
   .resumes-section {
-    @apply flex flex-wrap max-lg:flex-col gap-6 items-start  w-full max-w-[1850px] justify-evenly;
+    @apply flex flex-wrap max-md:flex-col max-md:gap-4 gap-6 items-start max-md:items-center w-full max-w-[1850px] justify-evenly;
   }
 
   .resume-card {
-    @apply flex flex-col gap-8 h-[560px] w-full lg:w-[450px] xl:w-[490px] bg-white rounded-2xl p-4;
+    @apply flex flex-col gap-8 h-[560px] w-[350px] lg:w-[450px] xl:w-[490px] bg-white rounded-2xl p-4;
   }
 
   .resume-card-header {
